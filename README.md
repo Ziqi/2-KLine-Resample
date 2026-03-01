@@ -6,7 +6,10 @@
 
 ## 🇨🇳 中文说明 (Chinese)
 
-**KLine Resample Studio** 是一套从 **KLine Matrix Station (1-Minute K-Line 数据下载器)** 衍生出的极客暗金风格桌面级数据转换终端。专门用于将 AA 股市场中颗粒细碎的 1 分钟级 K 线数据降维重组为标准的 5 分钟级 K 线，作为大模型预训练数据投喂前的预处理基座。
+**KLine Resample Studio** 是一套从 **1-KLine-Extract (1-Minute K-Line 数据下载器)** 衍生出的极客暗金风格桌面级数据转换终端。专门用于将 AA 股市场中颗粒细碎的 1 分钟级 K 线数据降维重组为标准的 5 分钟级 K 线，作为大模型预训练数据投喂前的预处理基座。
+
+## Acknowledgements
+Designed for integration with time-series forecasting foundation models like **Kronos** ([@shiyu-coder/Kronos](https://github.com/shiyu-coder/Kronos)).
 
 ### ✨ 核心黑科技
 - **[ 精准的熊猫重切片 (Pandas Resampling) ]**：基于 `pandas` DataFrame 技术，严格按照 A 股的标准（`closed='right', label='right'`）将 1 分钟细粒度数据聚合成 5 分钟的 OHLCV 形态，完美平滑切片边界，绝不漏斗数据。
