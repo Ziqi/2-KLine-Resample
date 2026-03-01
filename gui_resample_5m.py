@@ -87,22 +87,7 @@ class DashFrame(tk.Frame):
         self.canvas.create_rectangle(15, 0, 15 + len(self.title_text)*10, 20, fill=self.bg_color, outline="")
         self.canvas.create_text(20, 10, text=self.title_text, anchor="w", font=self.font, fill=self.fg_color)
 
-def bind_auto_scrollbar(container, scrollbar, side, fill):
-    def check_mouse_leave(e):
-        x, y = container.winfo_pointerxy()
-        cx, cy = container.winfo_rootx(), container.winfo_rooty()
-        cw, ch = container.winfo_width(), container.winfo_height()
-        if not (cx <= x <= cx + cw and cy <= y <= cy + ch):
-            scrollbar.pack_forget()
 
-    def on_enter(e):
-        scrollbar.pack(side=side, fill=fill, before=container.winfo_children()[0] if side in [tk.BOTTOM, tk.TOP] else None)
-        
-    def on_leave(e):
-        container.after(100, check_mouse_leave, e)
-        
-    container.bind("<Enter>", on_enter)
-    container.bind("<Leave>", on_leave)
 
 
 # ================= Main Window =================
@@ -112,7 +97,12 @@ class ResampleMatrixGUI(ttk.Window):
         super().__init__(themename="cyborg")
         self.title("全市场 K线数据转换器 (1分钟 转 5分钟)")
         self.geometry("1100x860")
-        self.minsize(1050, 800)
+        self.geometry("1100x850")
+        
+        try:
+            self.createcommand('::tk::mac::ReopenApplication', self.deiconify)
+        except Exception:
+            pass
         
         # Theme Colors (Flat Dark Gold)
         self.c_bg = "#080808"
@@ -285,8 +275,8 @@ class ResampleMatrixGUI(ttk.Window):
         txt_scroll = ttk.Scrollbar(txt_frame, orient=tk.VERTICAL, command=self.log_widget.yview, style="Hidden.Vertical.TScrollbar")
         self.log_widget.configure(yscrollcommand=txt_scroll.set)
         
+        txt_scroll.pack(side=RIGHT, fill=tk.Y)
         self.log_widget.pack(side=LEFT, fill=BOTH, expand=True)
-        bind_auto_scrollbar(txt_frame, txt_scroll, tk.RIGHT, tk.Y)
         
         self.log_widget.tag_config("info", foreground=self.c_fg)
         self.log_widget.tag_config("warn", foreground="#FF9800", font=("Menlo", 13, "bold"))
@@ -330,8 +320,8 @@ class ResampleMatrixGUI(ttk.Window):
         tree_yscroll = ttk.Scrollbar(tree_container, orient=tk.VERTICAL, command=self.tree.yview, style="Hidden.Vertical.TScrollbar")
         self.tree.configure(yscrollcommand=tree_yscroll.set)
         
+        tree_yscroll.pack(side=RIGHT, fill=tk.Y)
         self.tree.pack(side=LEFT, fill=BOTH, expand=True)
-        bind_auto_scrollbar(tree_container, tree_yscroll, tk.RIGHT, tk.Y)
         
         self.tree.bind('<ButtonRelease-1>', self.on_src_tree_click)
         self.tree.bind('<Delete>', self.on_delete_src)
@@ -364,8 +354,8 @@ class ResampleMatrixGUI(ttk.Window):
         tgt_yscroll = ttk.Scrollbar(tgt_container, orient=tk.VERTICAL, command=self.tgt_tree.yview, style="Hidden.Vertical.TScrollbar")
         self.tgt_tree.configure(yscrollcommand=tgt_yscroll.set)
         
+        tgt_yscroll.pack(side=RIGHT, fill=tk.Y)
         self.tgt_tree.pack(side=LEFT, fill=BOTH, expand=True)
-        bind_auto_scrollbar(tgt_container, tgt_yscroll, tk.RIGHT, tk.Y)
         
         # Bindings for opening output files
         self.tgt_tree.bind('<ButtonRelease-1>', self.on_tgt_tree_click)
